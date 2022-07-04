@@ -1,0 +1,17 @@
+<!-- #TODO make indents between buttons - https://www.youtube.com/watch?v=mnBl0jfM3VM -->
+{% extends 'base.html' %}
+{% block request_help %}
+    {% if access_admin or access_volunteer %}
+        <ul class="nav nav-tabs" role="tablist">
+            <li><a href={% url "openRequestHelp" %} class="class="btn btn-link btn-xs">Открытые заявки</a></li>
+            <li><a href={% url "closedRequestHelp" %} class="class="btn btn-link btn-xs">Закрытые заявки</a></li>
+            <li><a href={% url "myRequestHelp" %} class="class="btn btn-link btn-xs">Мои заявки</a></li>
+        </ul>
+    {% endif %}
+    {% if access_learner %}
+        <a href={% url "myRequestHelp" %} class="class="btn btn-link btn-xs">Мои заявки</a>
+    {% endif %}
+    {% if access is False %}
+        Вы не состоите ни в одной группе
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'request_help.html' %}
+{% block content %}
+    <h3>Заявки</h3>
+    <table class="table table-hover table-condensed">
+        <thead>
+            <tr>
+                <th>Номер заявки</th>
+                <th>Имя</th>
+                <th>Фамилия</th>
+                <th>Предмет</th>
+                <th>Тема</th>
+                <th>Статус</th>
+                <th>Волонтер</th>
+            </tr>
+        </thead>
+        {% for req in reqs %}
+        <tbody>
+            <tr>
+                <td>{{ req.request_number}}</td>
+                <td>{{ req.creator.first_name }}</td>
+                <td>{{ req.creator.last_name }}</td>
+                <td>{{ req.subject }}</td>
+                <td>{{ req.theme }}</td>
+                <td>{{ req.status }}</td>
+                <td>{{ req.owner }}</td>
+            </tr>
+        </tbody>
+        {% endfor %}
+    </table>
+{% endblock %}

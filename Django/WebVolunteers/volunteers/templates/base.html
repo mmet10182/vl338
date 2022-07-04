@@ -1,0 +1,45 @@
+<!doctype html>
+<head>
+<!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <script src="https://vk.com/js/api/openapi.js?169" type="text/javascript"></script>
+</head>
+{% load static %}
+{% csrf_token %}
+<html>
+  <body>
+  {% if user.username %}
+      <div class="container">
+        <p class="h5">User ID: {{user_id}}</p>
+        <p class="h5">Roles: {{roles}}</p>
+        <nav class="navbar navbar-default">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <a href="#" class="navbar-brand">Волонтеры 338</a>
+            </div>
+            <div>
+              <ul class="nav navbar-nav">
+                <li class="active"><a href="{% url "requestHelp"  %}">Заявки</a></li>
+                <li class="active"><a href="#">Обратная связь</a></li>
+              </ul>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </div>
+  {% else %}
+    {% block login %}
+    {% endblock %}
+  {% endif %}
+    <div class="container">
+      {% block request_help %}
+      {% endblock %}
+      {% block content %}
+      {% endblock %}
+    </div>
+  </body>
+</html>

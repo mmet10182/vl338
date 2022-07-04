@@ -1,0 +1,8 @@
+from decouple import config
+
+WEB_API_BACKEND = config('WEB_API_BACKEND')
+VK_GROUP_ID = config('VK_GROUP_ID')
+VK_GROUP_TOKEN = config('VK_GROUP_TOKEN')
+VK_API_VERSION = config('VK_API_VERSION')
+TELEGRAM_TOKEN = config('TELEGRAM_TOKEN')
+TELEGRAM_CHAT_ID = config('TELEGRAM_CHAT_ID')
