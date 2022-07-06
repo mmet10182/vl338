@@ -1,5 +1,8 @@
-/VKChatBot/venv
-/Django/venv
+**/WebVolunteers/static
+VkBot_venv/
+WebVolunteers_venv/
+/VKChatBot/venv/
+/Django/venv/
 .env
 email_sender.py
 db.sqlite3
