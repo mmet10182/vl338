@@ -76,7 +76,7 @@ class Dialog:
             'theme': self.theme,
             'user_id': self.user_id,
         }
-        req_drf = requests.post(url, data)
+        req_drf = requests.post(url, data, verify=False)
         # FIXME: Необходимо сделать проверку ответа, как минимум поверить request_number
         print('send_json_DRF', req_drf.text)
         return json.loads(req_drf.text)
