@@ -49,11 +49,17 @@ class RequestHelpAPIv1View(APIView):
 
         if volutr_req.detect_user_db() is False and volutr_req.from_msg == 'VK':
             print('Create user VK')
+            # Save user VK
             vk = VK(user_id=volutr_req.user_id, first_name=volutr_req.first_name, last_name=volutr_req.last_name)
             vk.save()
+            # Save Person
             person = Person(first_name=volutr_req.first_name, last_name=volutr_req.last_name,
                             phone_number=volutr_req.phone_number, vk=vk)
             person.save()
+            # Save Role
+            role = Role(learner=True, person=person)
+            role.save()
+
         elif volutr_req.detect_user_db() is not False and volutr_req.from_msg == 'VK':
             person = Person.objects.get(vk__user_id=volutr_req.user_id)
 
