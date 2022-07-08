@@ -160,13 +160,7 @@ TIME_INPUT_FORMATS = [
     '%H:%M',        # '14:30'
 ]
 
-<<<<<<< HEAD
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
-=======
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
->>>>>>> a5555fa2d56206fe332b33950f586c24c8cbe83c
