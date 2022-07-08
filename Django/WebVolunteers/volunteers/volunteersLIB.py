@@ -2,9 +2,10 @@ from .models import VK, Telegram
 from random import randint
 from .models import RequestHelp, Person, Role
 import re
+from decouple import config
 
-FROM_MSG = ['VK', 'Telegram']
-GENERAL_URL = 'http://127.0.0.1:8000/volunteers/'
+FROM_MSG = config('FROM_MSG', cast=lambda v: [s.strip() for s in v.split(',')])
+GENERAL_URL = config('GENERAL_URL')
 
 
 class VolunteersRequest:
