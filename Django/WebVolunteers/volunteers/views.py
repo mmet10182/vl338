@@ -8,7 +8,7 @@ from rest_framework.views import APIView
 from .models import RequestHelp, Person, VK, Telegram, Role
 from .serializers import PersonSerializer, RequestHelpSerializer
 from .volunteersLIB import VolunteersRequest, gen_request_number, roleVolunteer, VolunteersDetailHelp, GENERAL_URL, \
-    VolunteersPerson
+    VolunteersPerson, ratingValue
 import re
 from django.conf import settings
 
@@ -165,13 +165,14 @@ def closedRequestHelp(request):
             user_id = request.user.username[2:]
 
         role = Role.objects.get(person__vk__user_id=user_id)
-
         context = {
             'access_admin': True if role.admin else False,
             'access_volunteer': True if role.volunteer else False,
             'access_learner': True if role.learner else False,
-            'reqs': RequestHelp.objects.filter(status='Closed') if request.user.is_authenticated else []
+            'reqs': RequestHelp.objects.filter(status='Closed') if request.user.is_authenticated else [],
+            #'rating_val': ratingValue(),
         }
+        #print(context['rating_val'])
         return render(request, 'closed_request_help.html', context)
 
 

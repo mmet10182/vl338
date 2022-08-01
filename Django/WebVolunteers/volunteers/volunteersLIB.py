@@ -255,3 +255,11 @@ def roleVolunteer(func):
         return context
 
     return wrapper
+
+
+def ratingValue(value):
+    rating = {'1': 'Остались вопросы',
+              '2': 'Хорошо',
+              '3': 'Отлично',
+              }
+    return rating[value]
