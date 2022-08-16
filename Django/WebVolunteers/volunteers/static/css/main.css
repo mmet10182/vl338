@@ -12,3 +12,21 @@ body {
 
     margin-top: 70px;
 }
+
+.centered {
+    text-align: center;
+
+}
+
+a:hover, a:focus{
+    color: 7b7b7b;
+    text-decoration: none;
+    outline: 0;
+}
+
+.navbar {
+    font-weight: 800;
+    font-size: 14px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
