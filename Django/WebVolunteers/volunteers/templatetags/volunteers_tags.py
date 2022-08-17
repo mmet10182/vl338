@@ -4,5 +4,4 @@ register = template.Library()
 
 @register.filter(name='humman_rating')
 def humman_rating(value):
-    print(value)
     return ratingValue(value)

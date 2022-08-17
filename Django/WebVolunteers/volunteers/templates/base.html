@@ -20,8 +20,8 @@
   {% if user.username %}
       <div class="container">
         <div class="col-lg">
-          <p class="h5">User ID: {{user_id}}</p>
-          <p class="h5">Roles: {{roles}}</p>
+          <p class="h5">Ваш ID: {{user_id}}</p>
+          <p class="h5">Роли: {{roles}}</p>
         </div>
       </div>
 
@@ -34,7 +34,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              <a href="#" class="navbar-brand">Волонтеры 338</a>
+              <a href="/volunteers" class="navbar-brand">Волонтеры 338</a>
             </div>
             <div class="collapse navbar-collapse" id="items">
                 <ul class="nav navbar-nav">
@@ -55,6 +55,15 @@
       {% block content %}
       {% endblock %}
     </div>
+
+      <div class="container r">
+          {% if request.path == "/volunteers/" %}
+              <a href="open_request_help/" > Заявок открыто: {{request_open}} </a><br>
+              <a href="closed_request_help/"> Заявок закрыто: {{request_closed}} </a><br>
+              <a href="process_request_help/"> Заявок в процессе: {{request_process}} </a><br>
+          {% endif %}
+      </div>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
   </body>
 </html>

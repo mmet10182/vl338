@@ -8,6 +8,7 @@ urlpatterns = [
     path('detail_request_help/<int:request_number>/', views.detailRequestHelp, name='detailRequestHelp'),
     path('request_help/', views.requestHelp, name='requestHelp'),
     path('open_request_help/', views.openRequestHelp, name='openRequestHelp'),
+    path('process_request_help/', views.processRequestHelp, name='processRequestHelp'),
     path('closed_request_help/', views.closedRequestHelp, name='closedRequestHelp'),
     path('accept_request_help/<int:request_number>/', views.acceptRequestHelp, name='acceptRequestHelp'),
     path('cancel_request_help/<int:request_number>/', views.cancelRequestHelp, name='cancelRequestHelp'),

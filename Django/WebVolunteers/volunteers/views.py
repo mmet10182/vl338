@@ -90,7 +90,14 @@ class RequestHelpAPIv1View(APIView):
 @login_required
 def index(request):
     if request.method == 'GET':
-        return render(request, 'base.html')
+        request_open = len(RequestHelp.objects.filter(status='Open'))
+        request_closed = len(RequestHelp.objects.filter(status='Closed'))
+        request_process = len(RequestHelp.objects.filter(status='InProcess'))
+        context = {
+            'request_open': request_open,
+            'request_closed': request_closed,
+            'request_process': request_process}
+        return render(request, 'base.html', context)
 
 
 def login(request):
@@ -141,6 +148,24 @@ def openRequestHelp(request):
 
         return render(request, 'open_request_help.html', context)
 
+@login_required
+def processRequestHelp(request):
+    if request.method == 'GET':
+
+        user_id = request.user.id
+        if re.search('id[0-9]+', request.user.username):
+            user_id = request.user.username[2:]
+
+        role = Role.objects.get(person__vk__user_id=user_id)
+
+        context = {
+            'access_admin': True if role.admin else False,
+            'access_volunteer': True if role.volunteer else False,
+            'access_learner': True if role.learner else False,
+            'reqs': RequestHelp.objects.filter(status='InProcess') if request.user.is_authenticated else [],
+        }
+
+        return render(request, 'process_request_help.html', context)
 
 @login_required
 def closedRequestHelp(request):
