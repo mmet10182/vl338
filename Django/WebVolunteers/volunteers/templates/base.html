@@ -17,46 +17,47 @@
 {% csrf_token %}
 <html>
   <body>
-
+  
   <div class="container-fluid logo338">
         <a class="navbar-brand" rel="home" href="#" title="Волонтеры 338">
           <img  id="imglogo338" src="{% static 'img/logo338.jpeg' %}">
         </a>
-        <br>
+        <a id="brand-name" href="/volunteers">Волонтеры 338</a>
   </div>
-  <br>
+
   {% if user.username %}
-      <div class="container-fluid userinfo">        
-          Ваш ID: {{user_id}} <br>
-          Роли: {{roles}}
-      </div>
+  <div class="container-fluid userinfo">
+      Ваш ID: {{user_id}} <br>
+      Роли: {{roles}}
+  </div>
+  {% endif %}
 
-      <div class="container navmenu">
-            <nav class="navbar navbar-default">
-                <div class="container">
-                  <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#items" aria-expanded="false" aria-controls="navbar">
-                      <span class="sr-only">Toggle navigation</span>
-                      <span class="icon-bar"></span>
-                      <span class="icon-bar"></span>
-                      <span class="icon-bar"></span>
-                    </button>
-                    <a href="/volunteers" class="navbar-brand">Волонтеры 338</a>
-                  </div>
-                  <div class="collapse navbar-collapse" id="items">
-                      <ul class="nav navbar-nav">
-                          <li><a href="{% url "requestHelp"  %}">Заявки</a></li>
-                          <li><a href="#">Обратная связь</a></li>
-                      </ul>
-                  </div>
-                </div>
-              </nav>
+  <div class="container-fluid navmenu">
+    <nav class="navbar navbar-default">
+        <div class="container">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#items" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div class="collapse navbar-collapse" id="items">
+              <ul class="nav navbar-nav">
+                  <li><a href="{% url "requestHelp"  %}">Заявки</a></li>
+                  <li><a href="#">Обратная связь</a></li>
+              </ul>
+          </div>
         </div>
+      </nav>
+  </div>
 
-  {% else %}
+  {% if not user.username %}
     {% block login %}
     {% endblock %}
   {% endif %}
+
     <div class="container">
       {% block request_help %}
       {% endblock %}
