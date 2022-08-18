@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato|Raleway');
 
 body {
-    background-color: #f2f2f2;
+    
     font-family: "Lato";
     font-weight: 300;
     font-size: 16px;
@@ -17,12 +17,6 @@ body {
     text-align: center;
 }
 
-a:hover, a:focus{
-    color: 7b7b7b;
-    text-decoration: none;
-    outline: 0;
-}
-
 .navbar {
     font-weight: 800;
     font-size: 14px;
@@ -35,4 +29,23 @@ a:hover, a:focus{
     margin-left: auto;
     margin-right: auto;
     float: right;
+}
+
+.logo338 {
+    float: left;
+    padding-left: 19%;
+}
+
+.userinfo {
+    float: left;
+    padding-top: 35px;
+}
+
+#imglogo338 {
+    max-width:80px;
+    float: left;
+}
+
+.navmenu {
+    padding-top: 150px;
 }

@@ -1,6 +1,6 @@
 <!doctype html>
 {% load static %}
-<head>
+<head xmlns="http://www.w3.org/1999/html">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Latest compiled and minified CSS -->
@@ -17,33 +17,41 @@
 {% csrf_token %}
 <html>
   <body>
+
+  <div class="container-fluid logo338">
+        <a class="navbar-brand" rel="home" href="#" title="Волонтеры 338">
+          <img  id="imglogo338" src="{% static 'img/logo338.jpeg' %}">
+        </a>
+        <br>
+  </div>
+  <br>
   {% if user.username %}
-      <div class="container">
-        <div class="col-lg">
-          <p class="h5">Ваш ID: {{user_id}}</p>
-          <p class="h5">Роли: {{roles}}</p>
-        </div>
+      <div class="container-fluid userinfo">        
+          Ваш ID: {{user_id}} <br>
+          Роли: {{roles}}
       </div>
 
-      <nav class="navbar navbar-default">
-          <div class="container">
-            <div class="navbar-header">
-              <button type="button" class="navbar-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#items" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-              <a href="/volunteers" class="navbar-brand">Волонтеры 338</a>
-            </div>
-            <div class="collapse navbar-collapse" id="items">
-                <ul class="nav navbar-nav">
-                    <li><a href="{% url "requestHelp"  %}">Заявки</a></li>
-                    <li><a href="#">Обратная связь</a></li>
-                  </ul>
-            </div>
-          </div>
-        </nav>
+      <div class="container navmenu">
+            <nav class="navbar navbar-default">
+                <div class="container">
+                  <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#items" aria-expanded="false" aria-controls="navbar">
+                      <span class="sr-only">Toggle navigation</span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                    </button>
+                    <a href="/volunteers" class="navbar-brand">Волонтеры 338</a>
+                  </div>
+                  <div class="collapse navbar-collapse" id="items">
+                      <ul class="nav navbar-nav">
+                          <li><a href="{% url "requestHelp"  %}">Заявки</a></li>
+                          <li><a href="#">Обратная связь</a></li>
+                      </ul>
+                  </div>
+                </div>
+              </nav>
+        </div>
 
   {% else %}
     {% block login %}
