@@ -100,6 +100,8 @@ def gen_request_number():
 
 class VolunteersDetailHelp:
     def __init__(self, query_request_help):
+        self.creator_id = None # ID assigned by the database
+        self.owner_id = None # ID assigned by the database
         self.request_number = None
         self.subject = None
         self.theme = None
@@ -196,6 +198,16 @@ class VolunteersDetailHelp:
             self.creation_date = self.query_request_help.creation_date
         except AttributeError:
             self.creation_date = None
+
+        try:
+            self.creator_id = self.query_request_help.creator.id
+        except AttributeError:
+            self.creator_id = None
+
+        try:
+            self.owner_id = self.query_request_help.owner.id
+        except AttributeError:
+            self.owner_id = None
 
 
 class VolunteersPerson:

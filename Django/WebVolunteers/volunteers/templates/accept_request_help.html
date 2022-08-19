@@ -1,5 +1,13 @@
 {% extends 'request_help.html' %}
 {% block content %}
-    <br>
-    {{owner}}, заявка {{request_number}} принята.
+    {% if myself %}
+        <br>
+        Вы не можете принять свою заявку.
+    {% elif not permission %}
+        <br>
+        У Вас не достаточно прав, принять заявку могут пользователи с ролями: Волонтер или Админ
+    {% else %}
+        <br>
+        {{owner}}, заявка {{request_number}} принята.
+    {% endif %}
 {% endblock %}

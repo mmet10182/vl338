@@ -200,14 +200,28 @@ def closeRequestHelp(request, request_number=0):
 @login_required
 def acceptRequestHelp(request, request_number=0):
     if request.method == 'GET':
-
+        # user_id - will be the id of the system through which the user logged in (vk or telegram)
         user_id = request.user.id
         if re.search('id[0-9]+', request.user.username):
             user_id = request.user.username[2:]
 
         person = Person.objects.get(vk__user_id=user_id)
+        # person_id - internal id assigned by the database
         person_id = person.id
+
         request_help = RequestHelp.objects.get(request_number=request_number)
+        # Only members of the volunteer or admin role can accept request_help
+        role = Role.objects.get(person=person_id)
+        if not role.admin or not role.volunteer:
+            context = {'permission': False}
+            return render(request, 'accept_request_help.html', context)
+        # The creator of the request_help cannot accept the request_help that himself created
+        # creator_id - id assigned by the database, not VK or Telegram
+        creator_id = request_help.creator.id
+        if person_id == creator_id:
+            context = {'myself': True}
+            return render(request, 'accept_request_help.html', context)
+
         request_help.owner = person
         request_help.status = 'InProcess'
         request_help.save()
@@ -216,7 +230,9 @@ def acceptRequestHelp(request, request_number=0):
             'user_id': user_id,
             'person_id': person_id,
             'request_number': request_number,
-            'owner': request_help.owner.first_name
+            'owner': request_help.owner.first_name,
+            'myself': False,
+            'permission': True,
         }
 
         return render(request, 'accept_request_help.html', context)
@@ -270,12 +286,26 @@ def myRequestHelp(request):
 @login_required
 def detailRequestHelp(request, request_number=0):
     if request.method == 'GET':
+
+        user_id = request.user.id
+        if re.search('id[0-9]+', request.user.username):
+            user_id = request.user.username[2:]
+
+        person_id = Person.objects.get(vk__user_id=user_id)
+        person_id = person_id.id
+
         try:
             query_request_help = RequestHelp.objects.get(request_number=request_number)
         except RequestHelp.DoesNotExist:
             query_request_help = None
 
         details = VolunteersDetailHelp(query_request_help)
+        print('pid: {} oid {} cid {}'.format(person_id, details.owner_id, details.creator_id))
+        permission = False
+        #TODO
+        if person_id == details.owner_id or person_id == details.creator_id:
+            permission = True
+        print(permission)
         context = {
             'request_number': details.request_number,
             'Subject': details.subject,
@@ -292,5 +322,6 @@ def detailRequestHelp(request, request_number=0):
             'status': details.status,
             'creation_time': details.creation_time,
             'creation_date': details.creation_date,
+            'permission': permission,
         }
         return render(request, 'detail_request_help.html', {'details': context})

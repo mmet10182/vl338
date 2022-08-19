@@ -1,96 +1,100 @@
 {% extends 'request_help.html' %}
 {% block content %}
-    <div class="container">
-        {% if details.status != 'Closed' %}
-            <h3>Детали заявки.</h3>
-            <table class="table table-hover table-condensed">
-                <tbody>
-                    <tr>
-                        <td>Номер заявки</td> <td>{{details.request_number}}</td>
-                    </tr>
-                    <tr>
-                        <td>Предмет</td> <td>{{details.Subject}}</td>
-                    </tr>
-                    <tr>
-                        <td>Тема</td> <td>{{details.Theme}}</td>
-                    </tr>
-                    <tr>
-                        <td>Статус</td> <td>{{details.status}}</td>
-                    </tr>
-                    <tr>
-                        <td>Время создания заявки</td> <td>{{details.creation_time|date:"G:i:s"}}</td>
-                    </tr>
-                    <tr>
-                        <td>Дата создания заявки</td> <td>{{details.creation_date|date:"d-m-Y" }}</td>
-                    </tr>
-                </tbody>
-            </table>
-            <h3>Обучающийся. Создатель заявки.</h3>
-            <table class="table table-hover table-condensed">
-                <tbody>
-                    <tr>
-                        <td>Имя</td> <td>{{details.creator_first_name}}</td>
-                    </tr>
-                    <tr>
-                        <td>Фамилия</td> <td>{{details.creator_last_name}}</td>
-                    </tr>
-                    <tr>
-                        <td>ID вконтакте</td> <td>{{details.creator_vk_id}}</td>
-                    </tr>
-                    <tr>
-                        <td>ID телеграм</td> <td>{{details.creator_telegram_id}}</td>
-                    </tr>
-                </tbody>
-            </table>
-            <h3>Волонтер. Исполнитель заявки.</h3>
-            <table class="table table-hover table-condensed">
-                <tbody>
-                    <tr>
-                        <td>Имя</td> <td>{{details.owner_first_name}}</td>
-                    </tr>
-                    <tr>
-                        <td>Фамилия</td> <td>{{details.owner_last_name}}</td>
-                    </tr>
-                    <tr>
-                        <td>ID вконтакте</td> <td>{{details.owner_vk_id}}</td>
-                    </tr>
-                    <tr>
-                        <td>ID телеграм</td> <td>{{details.owner_telegram_id}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        {% endif %}
-
-
-        {% if 'Admin' in roles or 'Volunteer' in roles %}
-            {% if details.status == 'Open' %}
-                <a href={% url "acceptRequestHelp" details.request_number %} class="btn btn-success" role="button">Взять заявку</a>
+    {% if details.permission %}
+        <div class="container">
+            {% if details.status != 'Closed' %}
+                <h3>Детали заявки.</h3>
+                <table class="table table-hover table-condensed">
+                    <tbody>
+                        <tr>
+                            <td>Номер заявки</td> <td>{{details.request_number}}</td>
+                        </tr>
+                        <tr>
+                            <td>Предмет</td> <td>{{details.Subject}}</td>
+                        </tr>
+                        <tr>
+                            <td>Тема</td> <td>{{details.Theme}}</td>
+                        </tr>
+                        <tr>
+                            <td>Статус</td> <td>{{details.status}}</td>
+                        </tr>
+                        <tr>
+                            <td>Время создания заявки</td> <td>{{details.creation_time|date:"G:i:s"}}</td>
+                        </tr>
+                        <tr>
+                            <td>Дата создания заявки</td> <td>{{details.creation_date|date:"d-m-Y" }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h3>Обучающийся. Создатель заявки.</h3>
+                <table class="table table-hover table-condensed">
+                    <tbody>
+                        <tr>
+                            <td>Имя</td> <td>{{details.creator_first_name}}</td>
+                        </tr>
+                        <tr>
+                            <td>Фамилия</td> <td>{{details.creator_last_name}}</td>
+                        </tr>
+                        <tr>
+                            <td>ID вконтакте</td> <td>{{details.creator_vk_id}}</td>
+                        </tr>
+                        <tr>
+                            <td>ID телеграм</td> <td>{{details.creator_telegram_id}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h3>Волонтер. Исполнитель заявки.</h3>
+                <table class="table table-hover table-condensed">
+                    <tbody>
+                        <tr>
+                            <td>Имя</td> <td>{{details.owner_first_name}}</td>
+                        </tr>
+                        <tr>
+                            <td>Фамилия</td> <td>{{details.owner_last_name}}</td>
+                        </tr>
+                        <tr>
+                            <td>ID вконтакте</td> <td>{{details.owner_vk_id}}</td>
+                        </tr>
+                        <tr>
+                            <td>ID телеграм</td> <td>{{details.owner_telegram_id}}</td>
+                        </tr>
+                    </tbody>
+                </table>
             {% endif %}
-            {% if details.status == 'InProcess' %}
-                <a href={% url "cancelRequestHelp" details.request_number %} class="btn btn-danger" role="button">Отказаться</a>
-            {% endif %}
-        {% endif %}
 
-        {% if 'Learner' in roles %}
-            {{status}}
-            {% if details.status == 'InProcess' %}
-                <form action="/volunteers/close_request_help/{{details.request_number}}" method="GET">
-                    {% csrf_token %}
-                    <input type="radio" id="ratingChoice1" name="rating" value="1"  onchange="document.getElementById('submit').disabled = !this.checked;">
-                    <label for="ratingChoice1">Остались вопросы</label>
 
-                    <input type="radio" id="ratingChoice2" name="rating" value="2"  onchange="document.getElementById('submit').disabled = !this.checked;">
-                    <label for="ratingChoice2">Хорошо</label>
+            {% if 'Admin' in roles or 'Volunteer' in roles %}
+                {% if details.status == 'Open' %}
+                    <a href={% url "acceptRequestHelp" details.request_number %} class="btn btn-success" role="button">Взять заявку</a>
+                {% endif %}
+                {% if details.status == 'InProcess' %}
+                    <a href={% url "cancelRequestHelp" details.request_number %} class="btn btn-danger" role="button">Отказаться</a>
+                {% endif %}
+            {% endif %}
 
-                    <input type="radio" id="ratingChoice3" name="rating" value="3"  onchange="document.getElementById('submit').disabled = !this.checked;">
-                    <label for="ratingChoice3">Отлично</label>
-                    <br>
-                    <button id="submit" class="btn btn-success" disabled>Закрыть заявку</button>
-                </form>
+            {% if 'Learner' in roles %}
+                {{status}}
+                {% if details.status == 'InProcess' %}
+                    <form action="/volunteers/close_request_help/{{details.request_number}}" method="GET">
+                        {% csrf_token %}
+                        <input type="radio" id="ratingChoice1" name="rating" value="1"  onchange="document.getElementById('submit').disabled = !this.checked;">
+                        <label for="ratingChoice1">Остались вопросы</label>
+
+                        <input type="radio" id="ratingChoice2" name="rating" value="2"  onchange="document.getElementById('submit').disabled = !this.checked;">
+                        <label for="ratingChoice2">Хорошо</label>
+
+                        <input type="radio" id="ratingChoice3" name="rating" value="3"  onchange="document.getElementById('submit').disabled = !this.checked;">
+                        <label for="ratingChoice3">Отлично</label>
+                        <br>
+                        <button id="submit" class="btn btn-success" disabled>Закрыть заявку</button>
+                    </form>
+                {% endif %}
+                {% if details.status == 'Closed' %}
+                    <h3>Спасибо за обращение! Ваша заявка закрыта.</h3>
+                {% endif %}
             {% endif %}
-            {% if details.status == 'Closed' %}
-                <h3>Спасибо за обращение! Ваша заявка закрыта.</h3>
-            {% endif %}
-        {% endif %}
-    </div>
+        </div>
+    {% else %}
+        У Вас не достаточно прав на просмотр этой заявки, только создатель или исполнитель обладают правами для просмотра и управления этой заявкой.
+    {% endif %}
 {% endblock %}
