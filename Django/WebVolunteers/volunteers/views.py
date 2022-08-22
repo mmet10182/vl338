@@ -211,10 +211,12 @@ def acceptRequestHelp(request, request_number=0):
 
         request_help = RequestHelp.objects.get(request_number=request_number)
         # Only members of the volunteer or admin role can accept request_help
+        permission = False
         role = Role.objects.get(person=person_id)
-        if not role.admin or not role.volunteer:
-            context = {'permission': False}
-            return render(request, 'accept_request_help.html', context)
+        if role.admin or role.volunteer:
+            permission = True
+        else:
+            return render(request, 'accept_request_help.html', context={'permission': permission})
         # The creator of the request_help cannot accept the request_help that himself created
         # creator_id - id assigned by the database, not VK or Telegram
         creator_id = request_help.creator.id
@@ -232,7 +234,7 @@ def acceptRequestHelp(request, request_number=0):
             'request_number': request_number,
             'owner': request_help.owner.first_name,
             'myself': False,
-            'permission': True,
+            'permission': permission,
         }
 
         return render(request, 'accept_request_help.html', context)
