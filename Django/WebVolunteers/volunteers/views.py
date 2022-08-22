@@ -220,9 +220,10 @@ def acceptRequestHelp(request, request_number=0):
         # The creator of the request_help cannot accept the request_help that himself created
         # creator_id - id assigned by the database, not VK or Telegram
         creator_id = request_help.creator.id
+        myself = False
         if person_id == creator_id:
-            context = {'myself': True}
-            return render(request, 'accept_request_help.html', context)
+            myself = True
+            return render(request, 'accept_request_help.html', context = {'myself': myself})
 
         request_help.owner = person
         request_help.status = 'InProcess'
@@ -233,7 +234,7 @@ def acceptRequestHelp(request, request_number=0):
             'person_id': person_id,
             'request_number': request_number,
             'owner': request_help.owner.first_name,
-            'myself': False,
+            'myself': myself,
             'permission': permission,
         }
 
@@ -302,9 +303,8 @@ def detailRequestHelp(request, request_number=0):
             query_request_help = None
 
         details = VolunteersDetailHelp(query_request_help)
-        print('pid: {} oid {} cid {}'.format(person_id, details.owner_id, details.creator_id))
+        # Request_help creator can view detailed information
         permission = False
-        #TODO
         if person_id == details.owner_id or person_id == details.creator_id:
             permission = True
         print(permission)
