@@ -9,6 +9,9 @@ class Role(models.Model):
     volunteer = models.BooleanField(default=False)
     person = models.ForeignKey('Person', on_delete=models.SET_NULL, null=True, help_text='Role person')
 
+    def __str__(self):
+        return '{} {}'.format(self.person.first_name, self.person.last_name)
+
 
 class Person(models.Model):
     first_name = models.CharField(max_length=20, blank=True, null=True, help_text="Enter first name")
@@ -63,3 +66,7 @@ class Telegram(models.Model):
     username = models.CharField(max_length=20, blank=True, null=True, help_text="telegram name")
     first_name = models.CharField(max_length=20, blank=True, null=True, help_text="Enter first name")
     last_name = models.CharField(max_length=20, blank=True, null=True, help_text="Enter last name")
+
+
+class Subjects(models.Model):
+    subject_name = models.CharField(max_length=20, help_text="subject_name")

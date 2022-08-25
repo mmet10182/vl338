@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% if 'Admin' in roles %}
+        <div class="container">
+            <ul class="nav nav-tabs" role="tablist">
+                <li><a href={% url "vlSubjects" %} class="class="btn btn-link btn-xs">Предметы</a></li>
+                <li><a href={% url "vlUsers" %} class="class="btn btn-link btn-xs">Пользователи</a></li>
+            </ul>
+        </div>
+    {% endif %}
+{% endblock %}

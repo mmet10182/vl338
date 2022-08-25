@@ -327,3 +327,15 @@ def detailRequestHelp(request, request_number=0):
             'permission': permission,
         }
         return render(request, 'detail_request_help.html', {'details': context})
+
+@login_required
+def vlAdmin(request):
+    return render(request, 'vl_admin.html', {'admin': 'Manage the site'})
+
+@login_required
+def vlSubjects(request):
+    return render(request, 'vl_subjects.html', {'admin': 'Manage the site'})
+
+@login_required
+def vlUsers(request):
+    return render(request, 'vl_users.html', {'admin': 'Manage the site'})

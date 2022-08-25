@@ -47,6 +47,9 @@
               <ul class="nav navbar-nav">
                   <li><a href="{% url "requestHelp"  %}">Заявки</a></li>
                   <li><a href="#">Обратная связь</a></li>
+                  {% if 'Admin' in roles %}
+                    <li><a href="{% url "vlAdmin" %}">Управлеие</a></li>
+                  {% endif %}
               </ul>
           </div>
         </div>
