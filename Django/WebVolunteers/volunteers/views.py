@@ -5,12 +5,13 @@ from django.shortcuts import render, redirect
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .models import RequestHelp, Person, VK, Telegram, Role
-from .serializers import PersonSerializer, RequestHelpSerializer
+from .models import RequestHelp, Person, VK, Telegram, Role, Subject
+from .serializers import PersonSerializer, RequestHelpSerializer, SubjectSerializer
 from .volunteersLIB import VolunteersRequest, gen_request_number, roleVolunteer, VolunteersDetailHelp, GENERAL_URL, \
     VolunteersPerson, ratingValue
 import re
 from django.conf import settings
+from .forms import SubjectForm
 
 
 # Create your views here.
@@ -74,17 +75,24 @@ class RequestHelpAPIv1View(APIView):
         # request_number. request.date - the QueryDict object is not a mutable object
         reques_number = gen_request_number()
         detail_request_link = str(GENERAL_URL+'detail_request_help/'+reques_number)
-        print(detail_request_link)
         from_client.update({'request_number': reques_number,
                             'creator': person.id,
                             'detail_request_link': detail_request_link})
-        print(from_client)
         query_dict = QueryDict('', mutable=True)
         query_dict.update(from_client)
         serializer = RequestHelpSerializer(data=query_dict)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(from_client)
+
+
+class SubjectAPIv1View(APIView):
+
+    def get(self, request):
+        subject = Subject.objects.all()
+        serializer = SubjectSerializer(subject, many=True)
+        return Response({'posts': serializer.data})
+
 
 
 @login_required
@@ -148,6 +156,7 @@ def openRequestHelp(request):
 
         return render(request, 'open_request_help.html', context)
 
+
 @login_required
 def processRequestHelp(request):
     if request.method == 'GET':
@@ -166,6 +175,7 @@ def processRequestHelp(request):
         }
 
         return render(request, 'process_request_help.html', context)
+
 
 @login_required
 def closedRequestHelp(request):
@@ -328,13 +338,30 @@ def detailRequestHelp(request, request_number=0):
         }
         return render(request, 'detail_request_help.html', {'details': context})
 
+
 @login_required
 def vlAdmin(request):
     return render(request, 'vl_admin.html', {'admin': 'Manage the site'})
 
+
 @login_required
 def vlSubjects(request):
-    return render(request, 'vl_subjects.html', {'admin': 'Manage the site'})
+    err = ''
+    subj_form = SubjectForm(request.POST)
+
+    if request.method == 'POST':
+        if subj_form.is_valid():
+            print('Form is valid')
+            subj_form.save()
+        return redirect('vlSubjects')
+
+    subjs = Subject.objects.all()
+    context = {'subj_form': subj_form,
+               'subjs': subjs,
+               'err': err}
+
+    return render(request, 'vl_subjects.html', context=context)
+
 
 @login_required
 def vlUsers(request):

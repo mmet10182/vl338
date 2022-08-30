@@ -19,6 +19,7 @@ urlpatterns = [
     path('login/', views.login, name="login"),
     path('api/v1/request_help.json', views.RequestHelpAPIv1View.as_view(), name='request_help_apiv1'),
     path('api/v1/persons.json', views.PersonAPIv1View.as_view()),
+    path('api/v1/subjects.json', views.SubjectAPIv1View.as_view()),
     path('oauth/', include('social_django.urls', namespace='social')),  # <--
     path('', views.index, name='index')
 ]

@@ -2,7 +2,18 @@
 {% block content %}
     {% if 'Admin' in roles %}
         <div class="container">
-            Предметы!
+            <p class="h3">Предметы:</p><br>
+            <ul class="list-unstyled">
+            {% for subj in subjs %}
+                    <li class="list-group-item">{{subj.subject_name}}</li>
+            {% endfor %}
+            </ul>
+            <form method="POST" class="post-form">
+                {% csrf_token %}
+                <p class="h4">Добавить предмет:</p>
+                {{subj_form.subject_name}}
+                <button type="submit" class="save btn btn-default"><span class="glyphicon glyphicon-plus"></span></button>
+            </form>
         </div>
     {% endif %}
 {% endblock %}
