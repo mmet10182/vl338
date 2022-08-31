@@ -7,13 +7,24 @@ from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
 from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 from VkBotClasses.Dialog import Dialog, get_dialog
 import telebot
-from config import TELEGRAM_TOKEN, VK_GROUP_TOKEN, VK_API_VERSION, VK_GROUP_ID, TELEGRAM_CHAT_ID
+from config import TELEGRAM_TOKEN, VK_GROUP_TOKEN, VK_API_VERSION, VK_GROUP_ID, TELEGRAM_CHAT_ID, WEB_API_BACKEND
 from datetime import datetime
+from requests import request
 
 telegramBot = telebot.TeleBot(TELEGRAM_TOKEN)
 
+
 # Предметы
-subjects = ['математика', 'история', 'русский язык', 'литература', 'алгебра', 'геометрия']
+def get_subjects():
+    url = WEB_API_BACKEND + 'subjects.json'
+    req = request(method='get', url=url)
+    req = json.loads(req.text)
+    subjs = []
+    for subj in req['posts']:
+        subjs.append(str(subj['subject_name']).lower())
+    return subjs
+
+
 # Запускаем бот
 vk_session = VkApi(token=VK_GROUP_TOKEN, api_version=VK_API_VERSION)
 vk = vk_session.get_api()
@@ -60,6 +71,7 @@ dialogs = list()
 def run():
     for event in longpoll.listen():
         if event.type == VkBotEventType.MESSAGE_NEW:
+            subjects = get_subjects()
             user_id = event.obj.message['from_id']
             # Получить имя фамилию пользователя(отправителя)
             user_get = vk.users.get(user_ids=(user_id))
@@ -70,6 +82,7 @@ def run():
             msg_from_user = (event.obj.message['text']).lower()
             # Получить диалог с пользователем если есть, если нет вернет False
             dialog = get_dialog(user_id, dialogs)
+
             print('user_id:{} first_name:{} last_name:{}'.format(user_id, first_name, last_name))
 
             if dialog:
