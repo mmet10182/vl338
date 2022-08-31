@@ -10,7 +10,7 @@ class Role(models.Model):
     person = models.ForeignKey('Person', on_delete=models.SET_NULL, null=True, help_text='Role person')
 
     def __str__(self):
-        return '{} {}'.format(self.person.first_name, self.person.last_name)
+        return '{} {} id:{}'.format(self.person.first_name, self.person.last_name, self.person.id)
 
 
 class Person(models.Model):
