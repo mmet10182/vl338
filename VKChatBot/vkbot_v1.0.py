@@ -17,7 +17,7 @@ telegramBot = telebot.TeleBot(TELEGRAM_TOKEN)
 # Предметы
 def get_subjects():
     url = WEB_API_BACKEND + 'subjects.json'
-    req = request(method='get', url=url)
+    req = request(method='get', url=url, verify=False)
     req = json.loads(req.text)
     subjs = []
     for subj in req['posts']:
