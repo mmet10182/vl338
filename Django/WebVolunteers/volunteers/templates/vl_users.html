@@ -2,7 +2,33 @@
 {% block content %}
     {% if 'Admin' in roles %}
         <div class="container">
-            Пользователи!
+            <p class="h3">Пользователи:</p><br>
+            <table class="table table-hover table-condensed">
+                <thead>
+                    <tr>
+                        <th>Имя</th>
+                        <th>Фамилия</th>
+                        <th>VK ID</th>
+                        <th>ID</th>
+                        <th>Роли</th>
+                    </tr>
+                </thead>
+                {% for person in persons %}
+                    <tbody>
+                        <tr>
+                            <td>{{ person.first_name }}</td>
+                            <td>{{ person.last_name }}</td>
+                            <td>{{ person.vkid }}</td>
+                            <td>{{ person.id }}</td>
+                            <td>
+                                {% for role in roles %}
+                                    {{role}}
+                                {% endfor %}
+                            </td>
+                        </tr>
+                    </tbody>
+                {% endfor %}
+            </table>
         </div>
     {% endif %}
 {% endblock %}

@@ -365,4 +365,19 @@ def vlSubjects(request):
 
 @login_required
 def vlUsers(request):
-    return render(request, 'vl_users.html', {'admin': 'Manage the site'})
+    persons = Person.objects.all()
+    list_persons = []
+    for person in persons:
+        roles = Role.objects.get(person=person)
+        #TODO
+        print('{} {}'.format(person.last_name, roles))
+        for i in roles:
+            print(i)
+        person = {'first_name': person.first_name,
+                  'last_name': person.last_name,
+                  'vkid': person.vk.user_id,
+                  'id': person.id,
+                  'roles': roles}
+        list_persons.append(person)
+    context = {'persons': list_persons}
+    return render(request, 'vl_users.html', context=context)
