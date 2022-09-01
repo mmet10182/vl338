@@ -101,12 +101,10 @@
             </p>
         {% endif %}
         {% if details.status == 'Open' %}
-            <div style="float: left; padding-top: 50px; padding-left: 50%; width:100%">
+            <div class="container" style="padding-top: 50px; width:100%">
                 <h4>Заявка: {{details.request_number}}</h4>
                 <h4>Предмет: {{details.Subject}}</h4>
                 <h4>Тема: {{details.Theme}}</h4>
-            </div>
-            <div style="float: left; padding-left: 50%; width:100%">
                 <a href={% url "acceptRequestHelp" details.request_number %} class="btn btn-success" role="button">Взять заявку</a>
             </div>
         {% endif %}
