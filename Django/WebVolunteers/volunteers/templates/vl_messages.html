@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% if close_another_requestHelp %}
+        <div class="centered">
+            <h3>Невозможно закрыть заявку, т.к. Вы не являетесь создателем заявки <a href={% url "detailRequestHelp" request_number %}>{{request_number}}</a>.</h3>
+        </div>
+    {% endif %}
+{% endblock %}

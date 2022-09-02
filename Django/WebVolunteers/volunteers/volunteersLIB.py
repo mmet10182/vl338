@@ -100,8 +100,8 @@ def gen_request_number():
 
 class VolunteersDetailHelp:
     def __init__(self, query_request_help):
-        self.creator_id = None # ID assigned by the database
-        self.owner_id = None # ID assigned by the database
+        self.creator_id = None  # ID assigned by the database
+        self.owner_id = None  # ID assigned by the database
         self.request_number = None
         self.subject = None
         self.theme = None
@@ -212,7 +212,8 @@ class VolunteersDetailHelp:
 
 class VolunteersPerson:
     def __init__(self, user_id):
-        self.user_id = user_id
+        self.user_id = str(user_id)
+
 
     def get_roles(self):
 
@@ -231,15 +232,20 @@ class VolunteersPerson:
                 roles.append('Learner')
             if query_roles.volunteer:
                 roles.append('Volunteer')
-        else: return False
+        else:
+            return False
         return roles
 
     def get_id(self):
         """
         The method return person ID from database
         """
+        if re.search('id[0-9]+', self.user_id):
+            self.user_id = self.user_id[2:]
+
         vk_id = None
         telegram_id = None
+
         if self.user_id is not None:
             try:
                 person = Person.objects.get(vk__user_id=self.user_id)
@@ -248,12 +254,11 @@ class VolunteersPerson:
                 vk_id = False
 
             try:
-                print(self.user_id)
                 person = Person.objects.get(telegram__user_id=self.user_id)
                 return person.id
             except Person.DoesNotExist:
                 telegram_id = False
-
+        print('get_id: {}, vk_id: {}, telegram_id: {}'.format(self.user_id, vk_id, telegram_id))
         if vk_id is False and telegram_id is False:
             return False
 

@@ -21,9 +21,9 @@
                             <td>{{ person.vkid }}</td>
                             <td>{{ person.id }}</td>
                             <td>
-                                {% for role in roles %}
-                                    {{role}}
-                                {% endfor %}
+                                {% if person.role_admin %} Администратор {% endif %}
+                                {% if person.role_volunteer %} Волонтер {% endif %}
+                                {% if person.role_learner %} Ученик {% endif %}
                             </td>
                         </tr>
                     </tbody>

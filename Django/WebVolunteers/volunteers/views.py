@@ -190,21 +190,25 @@ def closedRequestHelp(request):
             'access_volunteer': True if role.volunteer else False,
             'access_learner': True if role.learner else False,
             'reqs': RequestHelp.objects.filter(status='Closed') if request.user.is_authenticated else [],
-            #'rating_val': ratingValue(),
         }
-        #print(context['rating_val'])
         return render(request, 'closed_request_help.html', context)
 
 
 @login_required
 def closeRequestHelp(request, request_number=0):
     if request.method == 'GET':
+        person = VolunteersPerson(str(request.user.username))
         request_help = RequestHelp.objects.get(request_number=request_number)
-        request_help.status = 'Closed'
-        request_help.rating = request.GET['rating']
-        request_help.save()
-        current_page = request.META.get('HTTP_REFERER')
-        return HttpResponseRedirect(current_page)
+        print('creator: {} person: {}'.format(request_help.creator.id, person.get_id()))
+        if request_help.creator.id == person.get_id():
+            request_help.status = 'Closed'
+            request_help.rating = request.GET['rating']
+            request_help.save()
+            current_page = request.META.get('HTTP_REFERER')
+            return HttpResponseRedirect(current_page)
+        context = {'close_another_requestHelp': True,
+                   'request_number': request_number}
+        return render(request, 'vl_messages.html', context=context)
 
 
 @login_required
@@ -368,16 +372,15 @@ def vlUsers(request):
     persons = Person.objects.all()
     list_persons = []
     for person in persons:
-        roles = Role.objects.get(person=person)
-        #TODO
-        print('{} {}'.format(person.last_name, roles))
-        for i in roles:
-            print(i)
+        role = Role.objects.get(person=person)
+        print('user:{} roles:{}'.format(person.last_name, role.admin))
         person = {'first_name': person.first_name,
                   'last_name': person.last_name,
                   'vkid': person.vk.user_id,
                   'id': person.id,
-                  'roles': roles}
+                  'role_admin': role.admin,
+                  'role_learner': role.learner,
+                  'role_volunteer': role.volunteer}
         list_persons.append(person)
     context = {'persons': list_persons}
     return render(request, 'vl_users.html', context=context)
