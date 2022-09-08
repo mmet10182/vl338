@@ -144,8 +144,12 @@ def openRequestHelp(request):
         user_id = request.user.id
         if re.search('id[0-9]+', request.user.username):
             user_id = request.user.username[2:]
-
-        role = Role.objects.get(person__vk__user_id=user_id)
+        try:
+            role = Role.objects.get(person__vk__user_id=user_id)
+        except Role.DoesNotExist:
+            context = {'user_id': user_id,
+                       'role_not_exist': True}
+            return render(request, 'vl_message.html', context=context)
 
         context = {
             'access_admin': True if role.admin else False,

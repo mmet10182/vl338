@@ -8,4 +8,8 @@
     {% if userDetail_userNotFound %}
         <h3>Пользователь не обнаружен!</h3>
     {% endif %}
+    {% if role_not_exist %}
+        <div class="centerde">
+            <h3>Вы не состоите ни в одной группе</h3>
+        </div>
 {% endblock %}
