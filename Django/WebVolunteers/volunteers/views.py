@@ -1,3 +1,4 @@
+import django.utils.datastructures
 from django.contrib.auth.decorators import login_required
 from django.http import QueryDict
 from django.http.response import HttpResponse, HttpResponseRedirect
@@ -8,7 +9,7 @@ from rest_framework.views import APIView
 from .models import RequestHelp, Person, VK, Telegram, Role, Subject
 from .serializers import PersonSerializer, RequestHelpSerializer, SubjectSerializer
 from .volunteersLIB import VolunteersRequest, gen_request_number, roleVolunteer, VolunteersDetailHelp, GENERAL_URL, \
-    VolunteersPerson, ratingValue
+    VolunteersPerson, ratingValue, setRole
 import re
 from django.conf import settings
 from .forms import SubjectForm
@@ -74,7 +75,7 @@ class RequestHelpAPIv1View(APIView):
         # Create a new QueryDict object because in the request.data from the client comes without field needed
         # request_number. request.date - the QueryDict object is not a mutable object
         reques_number = gen_request_number()
-        detail_request_link = str(GENERAL_URL+'detail_request_help/'+reques_number)
+        detail_request_link = str(GENERAL_URL + 'detail_request_help/' + reques_number)
         from_client.update({'request_number': reques_number,
                             'creator': person.id,
                             'detail_request_link': detail_request_link})
@@ -92,7 +93,6 @@ class SubjectAPIv1View(APIView):
         subject = Subject.objects.all()
         serializer = SubjectSerializer(subject, many=True)
         return Response({'posts': serializer.data})
-
 
 
 @login_required
@@ -160,7 +160,7 @@ def openRequestHelp(request):
 @login_required
 def processRequestHelp(request):
     if request.method == 'GET':
-
+        # FIXME: Use VolunteerPerson.get_id
         user_id = request.user.id
         if re.search('id[0-9]+', request.user.username):
             user_id = request.user.username[2:]
@@ -237,7 +237,7 @@ def acceptRequestHelp(request, request_number=0):
         myself = False
         if person_id == creator_id:
             myself = True
-            return render(request, 'accept_request_help.html', context = {'myself': myself})
+            return render(request, 'accept_request_help.html', context={'myself': myself})
 
         request_help.owner = person
         request_help.status = 'InProcess'
@@ -372,8 +372,8 @@ def vlUsers(request):
     persons = Person.objects.all()
     list_persons = []
     for person in persons:
-        role = Role.objects.get(person=person)
-        print('user:{} roles:{}'.format(person.last_name, role.admin))
+        print()
+        role = Role.objects.get(person_id=person.id)
         person = {'first_name': person.first_name,
                   'last_name': person.last_name,
                   'vkid': person.vk.user_id,
@@ -384,3 +384,28 @@ def vlUsers(request):
         list_persons.append(person)
     context = {'persons': list_persons}
     return render(request, 'vl_users.html', context=context)
+
+
+@login_required
+def vlUserDetail(request, user_id=0):
+    if user_id == 0:
+        context = {'userDetail_userNotFound': True}
+        return render(request, 'vl_messages.html', context=context)
+
+    person = Person.objects.get(id=user_id)
+    if request.method == 'GET':
+        role = Role.objects.get(person_id=person.id)
+        context = {'first_name': person.first_name,
+                   'last_name': person.last_name,
+                   'vkid': person.vk.user_id,
+                   'id': person.id,
+                   'role_admin': role.admin,
+                   'role_learner': role.learner,
+                   'role_volunteer': role.volunteer}
+        return render(request, 'vl_user_detail.html', context=context)
+
+    if request.method == 'POST':
+        print(request.POST)
+        print(setRole(request, person))
+        current_page = request.META.get('HTTP_REFERER')
+        return HttpResponseRedirect(current_page)

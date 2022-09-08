@@ -11,6 +11,7 @@
                         <th>VK ID</th>
                         <th>ID</th>
                         <th>Роли</th>
+                        <th></th>
                     </tr>
                 </thead>
                 {% for person in persons %}
@@ -25,6 +26,7 @@
                                 {% if person.role_volunteer %} Волонтер {% endif %}
                                 {% if person.role_learner %} Ученик {% endif %}
                             </td>
+                            <td><a href={% url "vlUserDetail" person.id %} class="btn btn-link btn-lg btn-xs btn-sm btn-md">Изменить</a></td>
                         </tr>
                     </tbody>
                 {% endfor %}

@@ -1,0 +1,68 @@
+{% extends 'vl_admin.html' %}
+{% block content %}
+    {% if 'Admin' in roles %}
+        <form method="POST" class="post-form">
+            {% csrf_token %}
+            <div class="container">
+                <p class="h3">Управление пользователем:</p><br>
+                <table class="table table-hover table-condensed">
+                    <tbody>
+                        <tr>
+                            <td>Имя</td><td>{{ first_name }}</td>
+                        </tr>
+                        <tr>
+                            <td>Фамилия</td><td>{{ last_name }}</td>
+                        </tr>
+                        <tr>
+                            <td>VK ID</td><td>{{ vkid }}</td>
+                        </tr>
+                        <tr>
+                            <td>Ваш ID</td><td>{{ id }}</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Роли
+                            </td>
+                            <td>
+                                {% if role_admin %}
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" name="roleAdmin" type="checkbox" id="adminChecked" checked>
+                                        <label class="form-check-label" for="adminChecked">Администратор</label>
+                                    </div>
+                                {% else %}
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" name="roleAdmin" type="checkbox" id="adminDisabled" >
+                                        <label class="form-check-label" for="adminDisabled">Администратор</label>
+                                    </div>
+                                {% endif %}
+                                {% if role_volunteer %}
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" name="roleVolunteer" type="checkbox" id="volunteerChecked" checked>
+                                        <label class="form-check-label" for="volunteerChecked">Волонтер</label>
+                                    </div>
+                                {% else %}
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" name="roleVolunteer" type="checkbox" id="volunteerDisabled" >
+                                        <label class="form-check-label" for="volunteerDisabled">Волонтер</label>
+                                    </div>
+                                {% endif %}
+                                {% if role_learner %}
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="roleLearner" type="checkbox" id="learnerChecked" checked>
+                                        <label class="toggle" for="learnerChecked">Ученик</label>
+                                    </div>
+                                {% else %}
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="roleLearner" type="checkbox" id="learnerDisabled" >
+                                        <label class="form-check-label" for="learnerDisabled">Ученик</label>
+                                    </div>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button type="submit" class="btn btn-success">Сохранить</button>
+            </div>
+        </form>
+    {% endif %}
+{% endblock %}

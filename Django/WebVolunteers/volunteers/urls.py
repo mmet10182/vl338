@@ -4,8 +4,9 @@ from . import views
 
 
 urlpatterns = [
-    path('vl_subjects', views.vlSubjects, name='vlSubjects'),
-    path('vl_users', views.vlUsers, name='vlUsers'),
+    path('vl_user_detail/<int:user_id>', views.vlUserDetail, name='vlUserDetail'),
+    path('vl_subjects/', views.vlSubjects, name='vlSubjects'),
+    path('vl_users/', views.vlUsers, name='vlUsers'),
     path('vl_admin/', views.vlAdmin, name='vlAdmin'),
     path('close_request_help/<int:request_number>/', views.closeRequestHelp, name='closeRequestHelp'),
     path('detail_request_help/<int:request_number>/', views.detailRequestHelp, name='detailRequestHelp'),

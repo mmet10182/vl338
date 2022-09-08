@@ -7,7 +7,7 @@ class Role(models.Model):
     admin = models.BooleanField(default=False)
     learner = models.BooleanField(default=False)
     volunteer = models.BooleanField(default=False)
-    person = models.ForeignKey('Person', on_delete=models.SET_NULL, null=True, help_text='Role person')
+    person = models.ForeignKey('Person', on_delete=models.SET_NULL, null=True, help_text='Role person', unique=True)
 
     def __str__(self):
         return '{} {} id:{}'.format(self.person.first_name, self.person.last_name, self.person.id)

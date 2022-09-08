@@ -3,6 +3,7 @@ from random import randint
 from .models import RequestHelp, Person, Role
 import re
 from decouple import config
+import django
 
 FROM_MSG = config('FROM_MSG', cast=lambda v: [s.strip() for s in v.split(',')])
 GENERAL_URL = config('GENERAL_URL')
@@ -92,10 +93,6 @@ class VolunteersRequestSupport(VolunteersRequest):
 
 class VolunteersRequestRating(VolunteersRequest):
     pass
-
-
-def gen_request_number():
-    return str(randint(10000, 999999))
 
 
 class VolunteersDetailHelp:
@@ -280,3 +277,36 @@ def ratingValue(value):
               '3': 'Отлично',
               }
     return rating[value]
+
+
+def gen_request_number():
+    return str(randint(10000, 999999))
+
+
+def setRole(request, person):
+    from_db_role = Role.objects.get(person=person)
+    try:
+        from_request_roleAdmin = True if request.POST['roleAdmin'] == 'on' else False
+    except django.utils.datastructures.MultiValueDictKeyError:
+        from_request_roleAdmin = False
+    try:
+        from_request_roleVolunteer = True if request.POST['roleVolunteer'] == 'on' else False
+    except django.utils.datastructures.MultiValueDictKeyError:
+        from_request_roleVolunteer = False
+    try:
+        from_request_roleLearner = True if request.POST['roleLearner'] == 'on' else False
+    except django.utils.datastructures.MultiValueDictKeyError:
+        from_request_roleLearner = False
+
+    if from_request_roleAdmin != from_db_role.admin:
+        role_admin = Role.objects.get(person=person)
+        role_admin.admin = from_request_roleAdmin
+        role_admin.save()
+    if from_request_roleVolunteer != from_db_role.volunteer:
+        role_volunteer = Role.objects.get(person=person)
+        role_volunteer.volunteer = from_request_roleVolunteer
+        role_volunteer.save()
+    if from_request_roleLearner != from_db_role.learner:
+        role_learner = Role.objects.get(person=person)
+        role_learner.learner = from_request_roleLearner
+        role_learner.save()

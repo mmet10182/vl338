@@ -5,4 +5,7 @@
             <h3>Невозможно закрыть заявку, т.к. Вы не являетесь создателем заявки <a href={% url "detailRequestHelp" request_number %}>{{request_number}}</a>.</h3>
         </div>
     {% endif %}
+    {% if userDetail_userNotFound %}
+        <h3>Пользователь не обнаружен!</h3>
+    {% endif %}
 {% endblock %}
