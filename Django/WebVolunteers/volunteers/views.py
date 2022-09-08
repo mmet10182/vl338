@@ -149,7 +149,7 @@ def openRequestHelp(request):
         except Role.DoesNotExist:
             context = {'user_id': user_id,
                        'role_not_exist': True}
-            return render(request, 'vl_message.html', context=context)
+            return render(request, 'vl_messages.html', context=context)
 
         context = {
             'access_admin': True if role.admin else False,
