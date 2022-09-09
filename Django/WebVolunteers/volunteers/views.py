@@ -391,7 +391,7 @@ def vlUsers(request):
 
 
 @login_required
-def vlUserDetail(request, user_id=0):
+def vlUserManage(request, user_id=0):
     if user_id == 0:
         context = {'userDetail_userNotFound': True}
         return render(request, 'vl_messages.html', context=context)
@@ -406,7 +406,7 @@ def vlUserDetail(request, user_id=0):
                    'role_admin': role.admin,
                    'role_learner': role.learner,
                    'role_volunteer': role.volunteer}
-        return render(request, 'vl_user_detail.html', context=context)
+        return render(request, 'vl_user_manage.html', context=context)
 
     if request.method == 'POST':
         print(request.POST)
