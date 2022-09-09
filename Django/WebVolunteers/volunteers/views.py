@@ -392,6 +392,7 @@ def vlUsers(request):
 
 @login_required
 def vlUserManage(request, user_id=0):
+    print('{} {}'.format(request.user.first_name, request.user.last_name))
     if user_id == 0:
         context = {'userDetail_userNotFound': True}
         return render(request, 'vl_messages.html', context=context)

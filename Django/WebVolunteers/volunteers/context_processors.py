@@ -15,3 +15,12 @@ def get_user_roles(request):
             'roles': person.get_roles(),
         }
         return context
+
+
+def get_user_name(request):
+    if request.method == 'GET':
+        context = {
+            'VK_first_name': request.user.first_name,
+            'VK_last_name': request.user.last_name
+        }
+        return context

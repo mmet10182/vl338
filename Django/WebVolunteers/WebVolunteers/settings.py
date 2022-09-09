@@ -76,6 +76,7 @@ TEMPLATES = [
                 'social_django.context_processors.backends',
                 'social_django.context_processors.login_redirect',
                 'volunteers.context_processors.get_user_roles',
+                'volunteers.context_processors.get_user_name',
             ],
         },
     },

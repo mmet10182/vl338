@@ -27,8 +27,12 @@
 
   {% if user.username %}
   <div class="container-fluid userinfo">
-      Ваш ID: {{user_id}} <br>
-      Роли: {{roles}}
+      <h5>Вы вошли как: {{VK_first_name}} {{VK_last_name}}<br>
+      {% if user_id or roles %}
+            Ваш ID: {{user_id}}<br>
+            Роли: {{roles}}<br>
+      {% endif %}
+      </h5>
   </div>
   {% endif %}
 
