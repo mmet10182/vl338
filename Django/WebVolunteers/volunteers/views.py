@@ -13,6 +13,7 @@ from .volunteersLIB import VolunteersRequest, gen_request_number, roleVolunteer,
 import re
 from django.conf import settings
 from .forms import SubjectForm
+from django.contrib.auth.models import User
 
 
 # Create your views here.
@@ -373,10 +374,12 @@ def vlSubjects(request):
 
 @login_required
 def vlUsers(request):
+    #auth_users = User.objects.filter(is_staff=False, is_superuser=False, 'username__gte=VK__user_id')
+    #for p in auth_users:
+    #    print('{} {} {}'.format(p.first_name, p.is_staff, p.is_superuser))
     persons = Person.objects.all()
     list_persons = []
     for person in persons:
-        print()
         role = Role.objects.get(person_id=person.id)
         person = {'first_name': person.first_name,
                   'last_name': person.last_name,

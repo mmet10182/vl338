@@ -20,7 +20,12 @@ def get_user_roles(request):
 def get_user_name(request):
     if request.method == 'GET':
         context = {
-            'VK_first_name': request.user.first_name,
-            'VK_last_name': request.user.last_name
+            'VK_first_name': False,
+            'VK_last_name': False
         }
+        if request.user.is_authenticated:
+            context = {
+                'VK_first_name': request.user.first_name,
+                'VK_last_name': request.user.last_name
+            }
         return context
