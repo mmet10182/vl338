@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block content %}
+<p class="h3">Добавление пользователя:</p>
+<form method="post">
+    {% csrf_token %}
+    <div class="container-fluid">
+        <div class="col-md-12" style="padding-top:20px; padding-bottom:20px">
+            <label >VK ID: </label>
+            <label >{{ vkid }}</label>
+            <input type="hidden" name="vkid" value={{ vkid }}>
+        </div>
+
+        <div class="col-md-12">
+            <label class="col-form-label">Фамилия</label>
+            <input type="text" class="form-control" maxlength="20" name="last_name" value={{ last_name }}>
+        </div>
+
+        <div class="col-md-12">
+            <label class="col-form-label">Имя</label>
+            <input type="text" class="form-control" maxlength="20" name="first_name" value={{ first_name }}>
+        </div>
+
+        <div class="col-md-12">
+            <label class="col-form-label">Отчество</label>
+            <input type="text" class="form-control" maxlength="20" name="patronymic">
+        </div>
+
+        <div class="col-md-1">
+            <label class="col-form-label">Класс</label>
+            <input type="text" class="form-control" maxlength="3" name="classroom">
+        </div>
+        <div class="col-md-12"></div>
+        <div class="col-md-2">
+            <label class="col-form-label">Телефон</label>
+            <input type="text" class="form-control mx-sm-3" maxlength="20" name="phone_number">
+        </div>
+
+        <div class="col-md-12">
+            <label class="col-form-label">Роли</label>
+        </div>
+        <div class="col-md-12">
+            <div class="form-check form-switch">
+                <input class="form-check-input" name="roleAdmin" type="checkbox" id="adminChecked">
+                <label class="form-check-label" for="adminChecked">Администратор</label>
+
+                <input class="form-check-input" name="roleVolunteer" type="checkbox" id="volunteerChecked" >
+                <label class="form-check-label" for="volunteerChecked">Волонтер</label>
+
+                <input class="form-check-input" name="roleLearner" type="checkbox" id="learnerChecked" >
+                <label class="toggle" for="learnerChecked">Ученик</label>
+            </div>
+        </div>
+
+
+        <div class="col-md-12" style="padding-top: 20px;">
+            <button type="submit" class="save btn btn-default">Добавить</button>
+        </div>
+        </div>
+    </div>
+</form>
+{% endblock %}

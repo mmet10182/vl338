@@ -374,10 +374,21 @@ def vlSubjects(request):
 
 @login_required
 def vlUsers(request):
-    #auth_users = User.objects.filter(is_staff=False, is_superuser=False, 'username__gte=VK__user_id')
-    #for p in auth_users:
-    #    print('{} {} {}'.format(p.first_name, p.is_staff, p.is_superuser))
+    """The method returns users in the system and users authorized on the site, but not added to the system"""
     persons = Person.objects.all()
+    auth_users = User.objects.filter(is_staff=False, is_superuser=False)
+
+    added_users = {i.vk.user_id for i in persons}
+    all_users = {i.username[2:] for i in auth_users}
+    all_users.difference_update(added_users)  # delete users that are added to the system
+    notaddedusers = []
+    if all_users:
+        for i in all_users:
+            user = User.objects.get(username='id' + i)
+            person = {'first_name': user.first_name,
+                      'last_name': user.last_name,
+                      'vkid': user.username[2:], }
+            notaddedusers.append(person)
     list_persons = []
     for person in persons:
         role = Role.objects.get(person_id=person.id)
@@ -389,13 +400,13 @@ def vlUsers(request):
                   'role_learner': role.learner,
                   'role_volunteer': role.volunteer}
         list_persons.append(person)
-    context = {'persons': list_persons}
+    context = {'persons': list_persons,
+               'notaddedusers': notaddedusers}
     return render(request, 'vl_users.html', context=context)
 
 
 @login_required
 def vlUserManage(request, user_id=0):
-    print('{} {}'.format(request.user.first_name, request.user.last_name))
     if user_id == 0:
         context = {'userDetail_userNotFound': True}
         return render(request, 'vl_messages.html', context=context)
@@ -413,7 +424,54 @@ def vlUserManage(request, user_id=0):
         return render(request, 'vl_user_manage.html', context=context)
 
     if request.method == 'POST':
-        print(request.POST)
-        print(setRole(request, person))
+        setRole(request, person)
         current_page = request.META.get('HTTP_REFERER')
         return HttpResponseRedirect(current_page)
+
+
+@login_required
+def vlUserAdd(request, user_id=0):
+    if user_id == 0:
+        context = {'userAdd_userNotFound': True}
+        return render(request, 'vl_messages.html', context=context)
+
+    if request.method == 'GET':
+        user = User.objects.get(username='id'+str(user_id))
+        context = {'vkid': user.username,
+                   'first_name': user.first_name,
+                   'last_name': user.last_name,}
+        return render(request, 'vl_user_add.html', context=context)
+
+    if request.method == 'POST':
+        print(request.POST)
+        user = User.objects.get(username=request.POST['vkid'])
+        # Save in the table VK original VK - last_name and VK - first_name
+        vk = VK(user_id=user.username[2:], first_name=user.first_name, last_name=user.last_name)
+        vk.save()
+        person = Person(first_name=request.POST['first_name'],
+                        last_name=request.POST['last_name'],
+                        patronymic=request.POST['patronymic'],
+                        classroom=request.POST['classroom'],
+                        phone_number=request.POST['phone_number'],
+                        vk=vk)
+        person.save()
+
+        try:
+            var = request.POST['roleAdmin']
+            roleAdmin = True
+        except KeyError:
+            roleAdmin = False
+        try:
+            var = request.POST['roleVolunteer']
+            roleVolunteer = True
+        except KeyError:
+            roleVolunteer = False
+        try:
+            var = request.POST['roleLearner']
+            roleLearner = True
+        except KeyError:
+            roleLearner = False
+
+        roles = Role(admin=roleAdmin, learner=roleLearner, volunteer=roleVolunteer, person=person)
+        roles.save()
+        return redirect('vlUsers')

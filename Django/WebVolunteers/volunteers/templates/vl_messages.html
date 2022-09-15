@@ -13,4 +13,7 @@
             <h3>Вы не состоите ни в одной группе</h3>
         </div>
     {% endif %}
+    {% if userAdd_userNotFound %}
+        <h3>Пользователь не обнаружен!</h3>
+    {% endif %}
 {% endblock %}
