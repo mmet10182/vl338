@@ -63,7 +63,7 @@
       </nav>
   </div>
 
-  {% if not user.username %}
+  {% if not user.username or user_id != 'False' %}
     {% block login %}
     {% endblock %}
   {% endif %}
