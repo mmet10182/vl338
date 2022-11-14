@@ -16,7 +16,9 @@ from .forms import SubjectForm
 from django.contrib.auth.models import User
 
 
+
 # Create your views here.
+
 
 
 class PersonAPIv1View(generics.ListAPIView):

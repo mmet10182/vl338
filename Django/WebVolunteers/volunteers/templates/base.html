@@ -33,6 +33,7 @@
       {% if user_id or roles %}
             Ваш ID: {{user_id}}<br>
             Роли: {{roles}}<br>
+            <a href="{% url "logout" %}"> Выход</a>
       {% endif %}
       </h5>
   </div>
